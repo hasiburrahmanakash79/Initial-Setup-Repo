@@ -105,7 +105,7 @@ const Dashboard = () => {
                   Menu.gap ? "mt-9" : "mt-2"
                 } ${
                   location.pathname === Menu.path
-                    ? "bg-white text-blue-500"
+                    ? "bg-[#1E2839] text-white"
                     : "hover:bg-white"
                 }`} // Add active class
               >
