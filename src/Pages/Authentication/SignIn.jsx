@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { FaEye, FaEyeSlash, FaMailBulk } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { FaUser } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-const Signup = () => {
+const SignIn = () => {
   const {
     register,
     handleSubmit,
@@ -18,9 +18,7 @@ const Signup = () => {
 
   const onSubmit = (data) => {
     console.log("Form Data:", data);
-    // Perform signup API call here
-    // After successful signup, redirect to OTP route
-    window.location.href = "/otp";
+    // Perform login API call here
   };
 
   return (
@@ -37,75 +35,31 @@ const Signup = () => {
       <div className="col-span-4 flex items-center justify-center ">
         <div className="max-w-lg w-full bg-white rounded-3xl border border-blue-200 shadow-md p-16">
           <h2 className="text-2xl font-bold text-center mb-2">
-            Sign Up Account
+            Sign in Account
           </h2>
           <p className="text-center text-sm mb-6">
-            Already have an Account?{" "}
-            <Link to="/signup" className="text-blue-500 hover:underline">
-              Sign In
+            Don’t have an Account?{" "}
+            <Link to='/signup' className="text-blue-500 hover:underline">
+              Sign Up Free
             </Link>
           </p>
 
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  First name
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    {...register("firstName", {
-                      required: "First is required",
-                    })}
-                    placeholder="first name"
-                    className="w-full border border-base-300 bg-base-200 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <FaUser className="absolute inset-y-3 right-3 flex items-center text-gray-500" />
-                </div>
-                {errors.username && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.username.message}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-1">
-                  Last name
-                </label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    {...register("lastName", {
-                      required: "Last is required",
-                    })}
-                    placeholder="Last name"
-                    className="w-full border border-base-300 bg-base-200 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <FaUser className="absolute inset-y-3 right-3 flex items-center text-gray-500" />
-                </div>
-                {errors.username && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.username.message}
-                  </p>
-                )}
-              </div>
-            </div>
             <div>
               <label className="block text-sm font-medium mb-1">
-                Email or Phone Number
+                User name
               </label>
               <div className="relative">
                 <input
                   type="text"
-                  {...register("email", {
-                    required: "Email or phone number is required",
+                  {...register("username", {
+                    required: "Username is required",
                   })}
-                  placeholder="Email or Phone Number"
+                  placeholder="Enter your user name"
                   className="w-full border border-base-300 bg-base-200 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
-                <FaMailBulk className="absolute inset-y-3 right-3 flex items-center text-gray-500" />
+                <FaUser className="absolute inset-y-3 right-3 flex items-center text-gray-500" />
               </div>
               {errors.username && (
                 <p className="text-red-500 text-sm mt-1">
@@ -146,14 +100,11 @@ const Signup = () => {
                     {...register("remember")}
                     className="mr-2"
                   />
-                  I agree to the{" "}
-                  <Link
-                    to="/terms"
-                    className="text-blue-500 ps-1 hover:underline"
-                  >
-                    Terms and Conditions
-                  </Link>
+                  Remember for 30 Days
                 </div>
+                <a href="#" className="text-blue-500 hover:underline">
+                  Forgot Password?
+                </a>
               </div>
             </div>
 
@@ -161,13 +112,13 @@ const Signup = () => {
               type="submit"
               className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-md"
             >
-              Sign Up
+              Login
             </button>
           </form>
 
           {/* Divider */}
-          <div className="divider">Or Sign Up with</div>
-          {/* Social SignUp */}
+          <div className="divider">Or Login with</div>
+          {/* Social Login */}
           <div className="flex space-x-4">
             <button className="flex-1 flex items-center justify-center border border-base-300 rounded-md py-2 hover:bg-gray-100">
               <img
@@ -187,11 +138,11 @@ const Signup = () => {
             </button>
           </div>
 
-          
+          {/* Bottom Signup */}
           <p className="text-center text-sm mt-6">
-            Already have an account?{" "}
-            <Link to="/signin" className="text-blue-500 hover:underline">
-              Sign In
+            Don’t have an account?{" "}
+            <Link to='/signup' className="text-blue-500 hover:underline">
+              Sign Up Free
             </Link>
           </p>
         </div>
@@ -200,4 +151,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignIn;
