@@ -1,166 +1,146 @@
-import { useEffect, useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
-import {
-  FaRegChessQueen,
-  FaRegCircleUser,
-  FaRightFromBracket,
-} from "react-icons/fa6";
-import { IconContext } from "react-icons";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { RiArrowRightSLine, RiGalleryView2, RiBookOpenLine } from "react-icons/ri";
+import logo from '../assets/logo/logo.svg'
+import {
+  Users,
+  Settings,
+  LogOut,
+  BookOpen,
+  LayoutDashboard,
+} from "lucide-react";
+import { useState } from "react";
+import { BiDollarCircle } from "react-icons/bi";
 
 const Dashboard = () => {
-  const [open, setOpen] = useState(true);
   const location = useLocation();
-  const handleLogout = () => {
+  const navigate = useNavigate();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+
+  const handleLogoutConfirm = () => {
+    setShowLogoutModal(false);
+    // Show success toast
     Swal.fire({
-      title: "Are you sure?",
-      text: "You want to logout!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, Logout!",
-      cancelButtonText: "No, Cancel!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        console.log("User logged out");
-      }
+      toast: true,
+      position: "top-end",
+      icon: "success",
+      title: "Logged out successfully",
+      showConfirmButton: false,
+      timer: 1500,
     });
+    navigate("/signin");
+    console.log("User logged out");
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setOpen(false);
-      } else {
-        setOpen(true);
-      }
-    };
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
   const iconMappings = {
-    Upgrade: FaRegChessQueen,
-    Book: RiBookOpenLine,
-    Home: RiGalleryView2,
+    Dashboard: LayoutDashboard,
+    UserManagement: BookOpen,
+    Matches: Users,
+    TermsConditions: BiDollarCircle,
+    Settings: Settings,
   };
 
   const Menus = [
     {
-      title: "Home",
-      path: "/home",
-      icon: iconMappings.Home,
-      role: "user",
-      gap: true,
+      title: "Dashboard",
+      path: "/",
+      icon: iconMappings.Dashboard,
     },
     {
-      title: "Study Plan",
-      path: "/study_plan",
-      icon: iconMappings.Book,
-      role: "user",
+      title: "Books",
+      path: "/books",
+      icon: iconMappings.UserManagement,
     },
     {
-      title: "Upgrade",
-      path: "/upgrade",
-      icon: iconMappings.Upgrade,
-      role: "user",
+      title: "Users",
+      path: "/users-management",
+      icon: iconMappings.Matches,
+    },
+    {
+      title: "Transaction",
+      path: "/transaction",
+      icon: iconMappings.TermsConditions,
+    },
+    {
+      title: "Privacy & Policy",
+      path: "/policy",
+      icon: iconMappings.Settings,
     },
   ];
 
-  const studentMenus = Menus.filter((menu) => menu.role === "user");
   return (
     <div className="flex">
       {/* Sidebar */}
-      <div
-        className={` ${
-          open ? "w-52 p-4" : "w-14 text-center"
-        } h-screen bg-base-300 fixed left-0 top-0 bottom-0 z-50 pt-8 transition-all duration-500`}
-      >
-        <RiArrowRightSLine 
-          className={`absolute cursor-pointer -right-5 text-gray-400 bg-base-300 shadow-2xl top-9 w-10 h-10 rounded-full ${
-            !open && "rotate-180"
-          }`}
-          onClick={() => setOpen(!open)}
-        />
-        <div className="flex items-center gap-x-4 p-2">
-          <img
-            src="/your-logo.png"
-            alt="logo"
-            className={`cursor-pointer w-full md:w-9/12 p-1 duration-500`}
-          />
+      <div className="w-60 h-screen bg-white fixed left-0 top-0 bottom-0 z-50 flex flex-col border-r border-gray-200">
+        <div className="flex items-center justify-center gap-x-4 px-8 py-5 mt-3">
+          <img src={logo} alt="" className="w-2/3 select-none pointer-events-none" />
         </div>
 
-        <ul
-          className={`${
-            open ? "" : "flex flex-col items-center justify-center"
-          }`}
-        >
-          { studentMenus.map(
-            (Menu, index) => (
-              <Link
-                to={Menu.path}
-                key={index}
-                className={`flex rounded-full py-1.5 px-4 cursor-pointer text-sm items-center ${
-                  Menu.gap ? "mt-9" : "mt-2"
-                } ${
-                  location.pathname === Menu.path
-                    ? "bg-[#1E2839] text-white"
-                    : "hover:bg-white"
-                }`} // Add active class
-              >
-                <li className="flex items-center gap-x-2 text-md ">
-                  <IconContext.Provider value={{ className: "react-icon" }}>
-                    <Menu.icon />
-                  </IconContext.Provider>
-                  <span
-                    className={`${!open && "hidden"} origin-left duration-200`}
-                  >
-                    {Menu.title}
-                  </span>
-                </li>
-              </Link>
-            )
-          )}
+        <ul className="px-4 mt-4 space-y-3">
+          {Menus.map((Menu, index) => (
+            <Link
+              to={Menu.path}
+              key={index}
+              className={`flex rounded-md py-2 px-4 cursor-pointer text-sm items-center mt-2 ${
+                location.pathname === Menu.path
+                  ? "bg-[#EFF6FF] text-[#0C4E96]"
+                  : "hover:bg-gray-100 text-gray-700"
+              }`}
+            >
+              <li className="flex items-center gap-x-2 text-md">
+                <Menu.icon className="w-5 h-5" />
+                <span className="font-medium">{Menu.title}</span>
+              </li>
+            </Link>
+          ))}
         </ul>
 
-        {/* Profile + Logout */}
-        <div className="mt-28 ms-3.5 md:ms-0 bottom-20 absolute w-full">
-          <Link
-            to="/profile"
-            className={`-ml-3.5 flex p-2 pl-6 cursor-pointer text-sm items-center w-full ${
-              location.pathname === "/profile" ? "bg-white" : "hover:bg-white"
-            }`}
-          >
-            <li className="flex items-center gap-x-4 w-full">
-              <FaRegCircleUser />
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
-                Profile
-              </span>
-            </li>
-          </Link>
+        {/* Logout */}
+        <div className="mt-auto px-4 pb-4">
           <button
-            onClick={handleLogout}
-            className="flex text-red-400 p-2 text-sm items-center cursor-pointer w-full"
+            onClick={() => setShowLogoutModal(true)}
+            className="flex bg-[#FDEFED] text-[#FD5E48] p-2 rounded-md text-sm items-center cursor-pointer w-full"
           >
-            <li className="flex items-center gap-x-4 w-full">
-              <FaRightFromBracket />
-              <span className={`${!open && "hidden"} origin-left duration-200`}>
-                Logout
-              </span>
+            <li className="flex items-center gap-x-3 px-2 py-1 w-full">
+              <LogOut className="w-5 h-5" />
+              <span>Logout</span>
             </li>
           </button>
         </div>
       </div>
 
       {/* Main Content Area */}
-      <div
-        className={` ${
-          open ? "pl-56 pr-4" : "pl-14 pr-2"
-        } flex-1 overflow-y-auto transition-all duration-500 h-[100vh]`}
-      >
-        <Outlet/>
+      <div className="pl-60 flex-1 overflow-y-auto h-[100vh]">
+        <Outlet />
       </div>
+
+      {/* Custom Logout Confirmation Modal */}
+      {showLogoutModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white p-10 text-center rounded-lg shadow-lg max-w-sm w-full">
+            <div className="flex justify-center mb-3">
+              <div className="bg-red-50 h-12 w-12 flex items-center justify-center text-red-400 rounded-full">
+                <LogOut />
+              </div>
+            </div>
+            <h3 className="text-lg font-semibold mb-2">Are you sure?</h3>
+            <p className="text-sm text-gray-600 mb-4">You want to logout!</p>
+            <div className="flex justify-center mt-10 gap-4">
+              <button
+                onClick={() => setShowLogoutModal(false)}
+                className="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transform duration-300"
+              >
+                No, Cancel!
+              </button>
+              <button
+                onClick={handleLogoutConfirm}
+                className="px-4 py-2 bg-[#fa5252] text-white rounded-md hover:bg-[#e04742] transform duration-300"
+              >
+                Yes, Logout!
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
