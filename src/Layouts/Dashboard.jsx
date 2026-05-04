@@ -72,10 +72,10 @@ const Dashboard = () => {
       {/* Sidebar */}
       <div className="w-60 h-screen bg-white fixed left-0 top-0 bottom-0 z-50 flex flex-col border-r border-gray-200">
         <div className="flex items-center justify-center gap-x-4 px-8 py-5 mt-3">
-          <img src={logo} alt="" className="w-2/3 select-none pointer-events-none" />
+          <h1 className="text-2xl font-bold">Dashboard</h1>
         </div>
 
-        <ul className="px-4 mt-4 space-y-3">
+        <ul className="px-4 mt-1 space-y-3">
           {Menus.map((Menu, index) => (
             <Link
               to={Menu.path}

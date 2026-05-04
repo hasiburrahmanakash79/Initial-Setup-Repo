@@ -1,124 +1,82 @@
-import { Search, Trash2, Mail, MapPin, Calendar, X } from "lucide-react";
+import { Search, Trash2 } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
-
-const servicesData = [
-  {
-    cover: "https://picsum.photos/id/1015/64/90",
-    title: "Harry Potter and the Sorcerer's Stone",
-    author: "J.K. Rowling",
-    label: "CAUTION",
-  },
-  {
-    cover: "https://picsum.photos/id/1015/64/90",
-    title: "Harry Potter and the Sorcerer's Stone",
-    author: "J.K. Rowling",
-    label: "CONCERN",
-  },
-  {
-    cover: "https://picsum.photos/id/1015/64/90",
-    title: "Harry Potter and the Sorcerer's Stone",
-    author: "J.K. Rowling",
-    label: "SAFE",
-  },
-  {
-    cover: "https://picsum.photos/id/1015/64/90",
-    title: "Harry Potter and the Sorcerer's Stone",
-    author: "J.K. Rowling",
-    label: "CONCERN",
-  },
-  {
-    cover: "https://picsum.photos/id/1015/64/90",
-    title: "Harry Potter and the Sorcerer's Stone",
-    author: "J.K. Rowling",
-    label: "CAUTION",
-  },
-];
 
 const users = [
   {
     id: 1,
-    name: "Danial Smith",
-    email: "danial@gmail.com",
-    join_date: "6 Jan, 2025",
-    subscriptions: "Premium",
-    scans: 34,
-    status: true,
-    avatar: "https://randomuser.me/api/portraits/men/32.jpg",
-    location: "Overland Park, KS",
-    services: servicesData,
+    name: "Emma Johnson",
+    email: "emma.johnson@gmail.com",
+    joinDate: "15 Jan, 2025",
+    totalScans: 145,
+    lastActivity: "10 Mar, 2026",
+    status: "Active",
   },
   {
     id: 2,
-    name: "Lisa Brown",
-    email: "lisa.brown@example.com",
-    join_date: "3 Mar, 2026",
-    subscriptions: "Free",
-    scans: 27,
-    status: true,
-    avatar: "https://randomuser.me/api/portraits/women/44.jpg",
-    location: "New York, NY",
-    services: servicesData,
+    name: "Michael Lee",
+    email: "michael.lee@yahoo.com",
+    joinDate: "22 Feb, 2025",
+    totalScans: 89,
+    lastActivity: "05 Apr, 2026",
+    status: "Active",
   },
   {
     id: 3,
-    name: "John Doe",
-    email: "john.doe@gmail.com",
-    join_date: "12 Dec, 2024",
-    subscriptions: "Premium",
-    scans: 89,
-    status: false,
-    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-    location: "Austin, TX",
-    services: servicesData,
+    name: "Sophia Garcia",
+    email: "sophia.garcia@proton.me",
+    joinDate: "08 Mar, 2025",
+    totalScans: 234,
+    lastActivity: "12 Feb, 2026",
+    status: "Inactive",
   },
   {
     id: 4,
-    name: "Sarah Miller",
-    email: "sarah.miller@outlook.com",
-    join_date: "22 Apr, 2025",
-    subscriptions: "Free",
-    scans: 15,
-    status: true,
-    avatar: "https://randomuser.me/api/portraits/women/22.jpg",
-    location: "Seattle, WA",
-    services: servicesData,
+    name: "James Patel",
+    email: "james.patel@outlook.com",
+    joinDate: "19 Apr, 2025",
+    totalScans: 67,
+    lastActivity: "28 Mar, 2026",
+    status: "Active",
   },
   {
     id: 5,
-    name: "Michael Chen",
-    email: "mchen@yahoo.com",
-    join_date: "5 Jul, 2025",
-    subscriptions: "Premium",
-    scans: 62,
-    status: true,
-    avatar: "https://randomuser.me/api/portraits/men/45.jpg",
-    location: "Chicago, IL",
-    services: servicesData,
+    name: "Olivia Chen",
+    email: "olivia.chen@gmail.com",
+    joinDate: "03 May, 2025",
+    totalScans: 312,
+    lastActivity: "14 Mar, 2026",
+    status: "Active",
   },
   {
     id: 6,
-    name: "Olivia Rodriguez",
-    email: "olivia.r@gmail.com",
-    join_date: "18 Sep, 2025",
-    subscriptions: "Free",
-    scans: 8,
-    status: true,
-    avatar: "https://randomuser.me/api/portraits/women/65.jpg",
-    location: "Miami, FL",
-    services: servicesData,
+    name: "Liam Rodriguez",
+    email: "liam.r@icloud.com",
+    joinDate: "27 Jun, 2025",
+    totalScans: 54,
+    lastActivity: "01 Mar, 2026",
+    status: "Inactive",
+  },
+  {
+    id: 7,
+    name: "Isabella Kim",
+    email: "isabella.kim@protonmail.com",
+    joinDate: "11 Jul, 2025",
+    totalScans: 178,
+    lastActivity: "15 Mar, 2026",
+    status: "Active",
   },
 ];
 
-const subscriptionsStyles = {
-  Premium: "text-blue-600 bg-blue-100",
-  Free: "text-yellow-600 bg-yellow-100",
+const statusStyles = {
+  Active: "text-green-600 bg-green-100",
+  Inactive: "text-yellow-600 bg-yellow-100",
 };
 
-const SubscriptionsBadge = ({ subscriptions }) => (
+const StatusBadge = ({ status }) => (
   <span
-    className={`text-xs font-semibold px-3 py-1 rounded-full ${subscriptionsStyles[subscriptions] || "text-gray-500 bg-gray-100"}`}
+    className={`text-xs font-semibold px-3 py-1 rounded-full ${statusStyles[status] || "text-gray-500 bg-gray-100"}`}
   >
-    {subscriptions}
+    {status}
   </span>
 );
 
@@ -138,18 +96,15 @@ const ChevronIcon = ({ open }) => (
   </svg>
 );
 
-const filterOptions = ["All", "Premium", "Free"];
+const filterOptions = ["All", "Active", "Inactive"];
 
 export default function UserList() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [userList, setUserList] = useState(users);
-  const [showDetailModal, setShowDetailModal] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
-
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -166,15 +121,10 @@ export default function UserList() {
     const matchSearch =
       user.name.toLowerCase().includes(search.toLowerCase()) ||
       user.email.toLowerCase().includes(search.toLowerCase()) ||
-      user.join_date.includes(search);
-    const matchFilter = filter === "All" || user.subscriptions === filter;
+      user.joinDate.includes(search);
+    const matchFilter = filter === "All" || user.status === filter;
     return matchSearch && matchFilter;
   });
-
-  const handleRowClick = (user) => {
-    setSelectedUser(user);
-    setShowDetailModal(true);
-  };
 
   const openDeleteModal = (user, e) => {
     e.stopPropagation();
@@ -184,14 +134,16 @@ export default function UserList() {
 
   const confirmDelete = () => {
     if (userToDelete) {
-      setUserList((prev) => prev.filter((b) => b.id !== userToDelete.id));
+      setUserList((prev) =>
+        prev.filter((u) => u.id !== userToDelete.id)
+      );
     }
     setShowDeleteModal(false);
     setUserToDelete(null);
   };
 
   return (
-    <div className=" mb-6">
+    <div className="pb-6">
       {/* Search + Filter Row */}
       <div className="flex items-center gap-3 mb-6">
         <div className="flex-1 relative">
@@ -200,7 +152,7 @@ export default function UserList() {
           </span>
           <input
             type="text"
-            placeholder="Search by name, email, or join_date..."
+            placeholder="Search by name, email, or join date..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-3 bg-white border border-gray-200 rounded-lg text-sm text-gray-500 placeholder-gray-400 outline-none"
@@ -254,7 +206,7 @@ export default function UserList() {
                 Total Scans
               </th>
               <th className="text-left text-xs font-semibold text-gray-500 uppercase tracking-wide px-4 py-3">
-                Subscriptions
+                Last Activity
               </th>
               <th className="text-left text-xs font-semibold text-gray-500 uppercase tracking-wide px-4 py-3">
                 Status
@@ -278,12 +230,13 @@ export default function UserList() {
               filtered.map((user, idx) => (
                 <tr
                   key={user.id}
-                  className={`hover:bg-gray-50 transition-colors cursor-pointer ${
-                    idx !== filtered.length - 1 ? "border-b border-gray-100" : ""
+                  className={`hover:bg-gray-50 transition-colors ${
+                    idx !== filtered.length - 1
+                      ? "border-b border-gray-100"
+                      : ""
                   }`}
-                  onClick={() => handleRowClick(user)}
                 >
-                  {/* user */}
+                  {/* User */}
                   <td className="px-6 py-4">
                     <div>
                       <p className="text-sm font-semibold text-gray-900">
@@ -295,22 +248,24 @@ export default function UserList() {
                     </div>
                   </td>
 
-                  {/* join_date */}
+                  {/* Join Date */}
                   <td className="px-4 py-4 text-sm text-gray-600 whitespace-nowrap">
-                    {user.join_date}
-                  </td>
-                  {/* Scans */}
-                  <td className="px-4 py-4 text-sm text-gray-700">
-                    {user.scans.toLocaleString()}
-                  </td>
-                  {/* subscriptions */}
-                  <td className="px-4 py-4">
-                    <SubscriptionsBadge subscriptions={user.subscriptions} />
+                    {user.joinDate}
                   </td>
 
-                  {/* status */}
-                  <td className="px-4 py-4 text-sm font-semibold text-green-600">
-                    {user.status ? "Active" : "Inactive"}
+                  {/* Total Scans */}
+                  <td className="px-4 py-4 text-sm text-gray-700">
+                    {user.totalScans.toLocaleString()}
+                  </td>
+
+                  {/* Last Activity */}
+                  <td className="px-4 py-4 text-sm text-gray-600 whitespace-nowrap">
+                    {user.lastActivity}
+                  </td>
+
+                  {/* Status */}
+                  <td className="px-4 py-4">
+                    <StatusBadge status={user.status} />
                   </td>
 
                   {/* Actions */}
@@ -333,10 +288,13 @@ export default function UserList() {
       {showDeleteModal && userToDelete && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[70]">
           <div className="bg-white rounded-2xl p-8 max-w-sm w-full mx-4 shadow-2xl">
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Confirm Delete</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              Confirm Delete
+            </h3>
             <p className="text-gray-600 mb-8">
-              Are you sure you want to delete{" "}
-              <span className="font-medium">{userToDelete.name}</span>? This action cannot be undone.
+              Are you sure you want to delete the user{" "}
+              <span className="font-medium">{userToDelete.name}</span>?
+              This action cannot be undone.
             </p>
             <div className="flex gap-4">
               <button
@@ -354,109 +312,6 @@ export default function UserList() {
               >
                 Delete
               </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* DETAIL MODAL (EXACTLY LIKE THE IMAGE) */}
-      {showDetailModal && selectedUser && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[70] p-4">
-          <div className="bg-white w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
-            {/* Close Button */}
-            <div className="flex justify-end p-2">
-              <button
-                onClick={() => {
-                  setShowDetailModal(false);
-                  setSelectedUser(null);
-                }}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
-              >
-                <X className="w-6 h-6 text-gray-500" />
-              </button>
-            </div>
-
-            <div className="flex flex-1 overflow-hidden">
-              {/* LEFT: PROFILE (exact match to image) */}
-              <div className="p-6 bg-base-200">
-                <div className="flex justify-center">
-                  <div className="w-32 h-32 rounded-full overflow-hidden shadow-md">
-                    <img
-                      src={selectedUser.avatar}
-                      alt={selectedUser.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                </div>
-
-                <h2 className="text-2xl font-bold text-center my-4 text-gray-900">
-                  {selectedUser.name}
-                </h2>
-
-                <div className="mt-4 space-y-2 text-sm">
-                  {/* Email */}
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                    <span className="text-gray-700">{selectedUser.email}</span>
-                  </div>
-
-                  {/* Location */}
-                  <div className="flex items-center gap-2">
-                    <MapPin className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                    <span className="text-gray-700">{selectedUser.location}</span>
-                  </div>
-
-                  {/* Join Date */}
-                  <div className="flex items-center gap-2">
-                    <Calendar className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                    <span className="text-gray-700">{selectedUser.join_date}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* RIGHT: SERVICE PROVIDED (exact match to image) */}
-              <div className="flex-1 px-6 mb-6 overflow-y-auto">
-                <h3 className="font-semibold text-lg mb-6 text-gray-900">Service provided</h3>
-
-                <div className="space-y-3 h-[400px] overflow-y-auto">
-                  {selectedUser.services.map((service, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-4 pb-2 border-b border-gray-100 last:border-none last:pb-0"
-                    >
-                      {/* Book Cover */}
-                      <div className="flex-shrink-0 w-10 h-12 overflow-hidden rounded shadow">
-                        <img
-                          src={service.cover}
-                          alt={service.title}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-
-                      {/* Book Info */}
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold">
-                          {service.title}
-                        </p>
-                        <p className="text-xs text-gray-500 mt-0.5">{service.author}</p>
-                      </div>
-
-                      {/* Status Badge (exact colors from image) */}
-                      <span
-                        className={`px-3 mr-5 py-1 text-xs font-semibold rounded-full ${
-                          service.label === "CAUTION"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : service.label === "CONCERN"
-                            ? "bg-rose-100 text-rose-600"
-                            : "bg-emerald-100 text-emerald-600"
-                        }`}
-                      >
-                        {service.label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         </div>

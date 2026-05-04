@@ -2,7 +2,7 @@
 
 const SectionTitle = ({ title, description }) => {
   return (
-    <div className="p-5 bg-white flex items-center justify-between border-b border-gray-200 mb-6">
+    <div className="sticky top-0 z-50 p-5 bg-white flex items-center justify-between border-b border-gray-200 mb-6">
       <div>
         <h1 className="text-2xl font-semibold">{title}</h1>
         <p className="text-[#4A5565] text-sm">{description}</p>
